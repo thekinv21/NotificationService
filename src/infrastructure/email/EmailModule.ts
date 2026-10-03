@@ -11,7 +11,7 @@ import { EmailService } from './EmailService';
     ResendModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        apiKey: config.get<string>('RESEND_API_KEY') || 'unset',
+        apiKey: config.getOrThrow<string>('RESEND_API_KEY'),
       }),
     }),
   ],

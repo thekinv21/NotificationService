@@ -35,7 +35,7 @@ export class EmailService {
         `Resend rejected email: ${error?.message}`,
         EmailService.name,
       );
-      throw new BadRequestException(error?.message ?? 'Failed to send email');
+      throw new BadRequestException('Failed to send email');
     }
   }
 }

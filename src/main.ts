@@ -2,6 +2,8 @@ import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 
+import helmet from 'helmet';
+
 import { AppModule } from '@/app/AppModule';
 
 import { swaggerConfig } from '@/infrastructure/config';
@@ -9,23 +11,27 @@ import { swaggerConfig } from '@/infrastructure/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const isProduction = process.env.NODE_ENV === 'production';
+
+  app.use(helmet());
+
   app.setGlobalPrefix('/api');
 
   app.enableVersioning({
     type: VersioningType.URI,
   });
 
-  SwaggerModule.setup(
-    '/docs',
-    app,
-    SwaggerModule.createDocument(app, swaggerConfig),
-  );
-
-  const MODE: string | undefined = process.env.NODE_ENV;
+  if (!isProduction) {
+    SwaggerModule.setup(
+      '/docs',
+      app,
+      SwaggerModule.createDocument(app, swaggerConfig),
+    );
+  }
 
   await app.listen(process.env.PORT ?? 4200);
 
-  if (MODE !== 'PROD') {
+  if (!isProduction) {
     Logger.debug('Swagger UI running on host: http://localhost:4200/docs');
   }
 }

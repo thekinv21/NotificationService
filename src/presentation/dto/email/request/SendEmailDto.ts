@@ -7,8 +7,8 @@ const SendEmailSchema = z
   .strictObject({
     to: z.union([Email, z.array(Email).min(1).max(50)]),
     subject: z.string().min(1).max(200),
-    text: z.string().min(1).optional(),
-    html: z.string().min(1).optional(),
+    text: z.string().min(1).max(100_000).optional(),
+    html: z.string().min(1).max(100_000).optional(),
   })
   .refine((body) => body.text !== undefined || body.html !== undefined, {
     message: 'Either text or html is required',
