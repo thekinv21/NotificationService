@@ -1,22 +1,16 @@
 import { Body, Controller, Post, Version } from '@nestjs/common';
 
-import { GmailUseCase } from '@/use-case/notification';
+import { SendEmailUseCase } from '@/use-case/notification';
 
-import { GmailDto } from '../dto/notification/request';
+import { SendEmailDto } from '../dto/email';
 
 @Controller('/notification')
 export class NotificationController {
-  constructor(private readonly gmailUseCase: GmailUseCase) {}
-
-  /**
-   *
-   * @param dto GmailDto
-   * @description Send gmail notification
-   */
+  constructor(private readonly sendEmailUseCase: SendEmailUseCase) {}
 
   @Version('1')
-  @Post('/gmail')
-  async sendGmail(@Body() dto: GmailDto) {
-    return this.gmailUseCase.except(dto);
+  @Post('/email')
+  async sendEmail(@Body() dto: SendEmailDto): Promise<void> {
+    await this.sendEmailUseCase.execute(dto);
   }
 }

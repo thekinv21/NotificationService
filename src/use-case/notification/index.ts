@@ -1,1 +1,1 @@
-export * from './GmailUseCase';
+export * from './email';
