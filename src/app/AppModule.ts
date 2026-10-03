@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { APP_PIPE } from '@nestjs/core';
 
 import { ZodValidationPipe } from 'nestjs-zod';
 
 import { EmailModule } from '@/infrastructure/email';
-
-import { ApiKeyGuard } from '@/presentation/guard';
 
 import { NotificationModule } from './NotificationModule';
 
@@ -20,9 +18,6 @@ import { NotificationModule } from './NotificationModule';
     NotificationModule,
   ],
   controllers: [],
-  providers: [
-    { provide: APP_PIPE, useClass: ZodValidationPipe },
-    { provide: APP_GUARD, useClass: ApiKeyGuard },
-  ],
+  providers: [{ provide: APP_PIPE, useClass: ZodValidationPipe }],
 })
 export class AppModule {}

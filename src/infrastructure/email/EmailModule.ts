@@ -1,7 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 
 import { ResendModule } from 'nestjs-resend';
+
+import { ApiKeyGuard } from '@/shared';
 
 import { EmailService } from './EmailService';
 
@@ -15,7 +18,13 @@ import { EmailService } from './EmailService';
       }),
     }),
   ],
-  providers: [EmailService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ApiKeyGuard,
+    },
+    EmailService,
+  ],
   exports: [EmailService],
 })
 export class EmailModule {}
