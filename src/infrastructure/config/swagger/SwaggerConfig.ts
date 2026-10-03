@@ -7,5 +7,7 @@ export const swaggerConfig = new DocumentBuilder()
   )
   .setVersion('1.0')
   .setContact('Vadim', 'https://github.com/thekinv21', 'thekinv21@gmail.com')
+  .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'x-api-key')
+  .addSecurityRequirements('x-api-key')
   .addServer('http://localhost:4200', 'Local Development')
   .build();
