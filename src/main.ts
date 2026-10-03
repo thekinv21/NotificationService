@@ -1,4 +1,4 @@
-import { VersioningType } from '@nestjs/common';
+import { Logger, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 
@@ -21,6 +21,12 @@ async function bootstrap() {
     SwaggerModule.createDocument(app, swaggerConfig),
   );
 
+  const MODE: string | undefined = process.env.NODE_ENV;
+
   await app.listen(process.env.PORT ?? 4200);
+
+  if (MODE !== 'PROD') {
+    Logger.debug('Swagger UI running on host: http://localhost:4200/docs');
+  }
 }
 void bootstrap();
